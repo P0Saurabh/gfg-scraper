@@ -1,13 +1,10 @@
-const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-
-// Add stealth plugin to avoid detection
-puppeteer.use(StealthPlugin());
+const puppeteer = require("puppeteer");
 
 const scrapeGFG = async (username) => {
     const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Required for Render environments
+        executablePath: '/opt/render/.cache/puppeteer/chrome/linux-132.0.6834.110/chrome-linux64/chrome',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
     const page = await browser.newPage();
