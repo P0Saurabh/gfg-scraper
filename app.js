@@ -1,28 +1,22 @@
-const puppeteer = require("puppeteer");
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
-const scrapeGFG = async (username) => {
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        executablePath: process.env.CHROME_PATH || puppeteer.executablePath(), // Render's Chrome path
-    });
+const app = express();
 
-    const page = await browser.newPage();
-    try {
-        const url = `https://www.geeksforgeeks.org/user/${username}/`;
-        await page.goto(url, { waitUntil: "load", timeout: 0 });
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-        const data = await page.evaluate(() => {
-            const codingScore = document.querySelector(".scoreCard_head_left--score__oSi_x")?.innerText || "N/A";
-            return { codingScore };
-        });
+// Example API Endpoint
+app.get("/", (req, res) => {
+    res.send("GFG Scraper API is running!");
+});
 
-        await browser.close();
-        return data;
-    } catch (error) {
-        await browser.close();
-        throw new Error(`Error scraping GFG: ${error.message}`);
-    }
-};
+// Set the port (use PORT from environment or default to 5000)
+const PORT = process.env.PORT || 5000;
 
-module.exports = { scrapeGFG };
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
