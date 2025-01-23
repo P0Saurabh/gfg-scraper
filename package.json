@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
 "scripts": {
+"scripts": {
   "start": "node app.js",
-  "postinstall": "npx puppeteer install --path=/opt/render/.cache/puppeteer"
+  "postinstall": "./render-build.sh"
 },
   "keywords": [],
   "author": "",
