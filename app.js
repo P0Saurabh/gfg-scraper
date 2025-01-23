@@ -5,11 +5,10 @@ const { scrapeGFG } = require("./scraper");
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Define the /api/gfg/:username route
+// API Route
 app.get("/api/gfg/:username", async (req, res) => {
     const { username } = req.params;
     try {
@@ -20,9 +19,8 @@ app.get("/api/gfg/:username", async (req, res) => {
     }
 });
 
-// Set the port from environment or default to 5000
+// Bind to the correct port
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
