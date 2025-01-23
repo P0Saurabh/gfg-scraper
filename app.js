@@ -1,26 +1,28 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const { scrapeGFG } = require("./scraper");
+const puppeteer = require("puppeteer");
 
-const app = express();
+const scrapeGFG = async (username) => {
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        executablePath: process.env.CHROME_PATH || puppeteer.executablePath(), // Render's Chrome path
+    });
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-
-// API Endpoint
-app.get("/api/gfg/:username", async (req, res) => {
-    const { username } = req.params;
-
+    const page = await browser.newPage();
     try {
-        const data = await scrapeGFG(username);
-        res.json({ username, data });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+        const url = `https://www.geeksforgeeks.org/user/${username}/`;
+        await page.goto(url, { waitUntil: "load", timeout: 0 });
 
-// Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+        const data = await page.evaluate(() => {
+            const codingScore = document.querySelector(".scoreCard_head_left--score__oSi_x")?.innerText || "N/A";
+            return { codingScore };
+        });
+
+        await browser.close();
+        return data;
+    } catch (error) {
+        await browser.close();
+        throw new Error(`Error scraping GFG: ${error.message}`);
+    }
+};
+
+module.exports = { scrapeGFG };
