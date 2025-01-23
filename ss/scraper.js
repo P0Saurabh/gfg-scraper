@@ -1,10 +1,10 @@
-const puppeteer = require("puppeteer-core");
 const chromium = require("chrome-aws-lambda");
+const puppeteer = require("puppeteer-core");
 
 const scrapeGFG = async (username) => {
     const browser = await puppeteer.launch({
         args: chromium.args,
-        executablePath: await chromium.executablePath,
+        executablePath: await chromium.executablePath, // Path to chrome-aws-lambda's Chrome binary
         headless: chromium.headless,
     });
 
