@@ -1,17 +1,19 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-extra");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+
+// Add stealth plugin to avoid detection
+puppeteer.use(StealthPlugin());
 
 const scrapeGFG = async (username) => {
-    const url = `https://www.geeksforgeeks.org/user/${username}/`;
-
     const browser = await puppeteer.launch({
         headless: true,
-        executablePath: '/usr/bin/google-chrome-stable', // Use system Chrome
-        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Required in Render's environment
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Required for Render environments
     });
 
     const page = await browser.newPage();
 
     try {
+        const url = `https://www.geeksforgeeks.org/user/${username}/`;
         await page.goto(url, { waitUntil: "load", timeout: 0 });
 
         const data = await page.evaluate(() => {
