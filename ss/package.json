@@ -5,14 +5,8 @@
   "scripts": {
     "start": "node app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "body-parser": "^1.20.3",
-    "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "puppeteer": "^24.1.1"
+    "puppeteer-core": "^20.7.0",
+    "chrome-aws-lambda": "^10.1.0"
   }
 }
