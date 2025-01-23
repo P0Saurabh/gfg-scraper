@@ -1,10 +1,11 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
+const chromium = require("chrome-aws-lambda");
 
 const scrapeGFG = async (username) => {
     const browser = await puppeteer.launch({
-        headless: true,
-        executablePath: '/usr/bin/google-chrome-stable', // Use system-installed Chrome
-        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Required in Render
+        args: chromium.args,
+        executablePath: await chromium.executablePath,
+        headless: chromium.headless,
     });
 
     const page = await browser.newPage();
