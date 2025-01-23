@@ -4,7 +4,7 @@ const scrapeGFG = async (username) => {
     const browser = await puppeteer.launch({
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        executablePath: "/usr/bin/google-chrome" // Specify the path to the Chrome binary
+        executablePath: "/usr/bin/google-chrome" // Use system-installed Chrome
     });
 
     const page = await browser.newPage();
